@@ -1,0 +1,24 @@
+diff --git a/src/launch/registerRootComponent.tsx b/src/launch/registerRootComponent.tsx
+index 96d908be6d..7db5b3ba67 100644
+--- a/src/launch/registerRootComponent.tsx
++++ b/src/launch/registerRootComponent.tsx
+@@ -2,6 +2,11 @@ import '../Expo.fx';
+ 
+ import { type ComponentType } from 'react';
+ import { AppRegistry, Platform } from 'react-native';
++import { wrapWithAIPADebugger } from '@ai-app/aipa-expo-debug';
++
++if (process.env.EXPO_OS === 'web') {
++  require('@expo/metro-runtime');
++}
+ 
+ declare namespace globalThis {
+   // TODO(@kitten): What's the proper type here? What would AppRegistry need to accept?
+@@ -43,6 +48,7 @@ export default function registerRootComponent<P extends InitialProps>(
+   if (process.env.NODE_ENV !== 'production') {
+     const { withDevTools } = require('./withDevTools') as typeof import('./withDevTools');
+     qualifiedComponent = withDevTools(component);
++    qualifiedComponent = wrapWithAIPADebugger(qualifiedComponent);
+   }
+ 
+   AppRegistry.registerComponent('main', () => qualifiedComponent);

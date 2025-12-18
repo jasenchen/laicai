@@ -1,0 +1,21 @@
+diff --git a/build/src/start/server/middleware/CorsMiddleware.js b/build/src/start/server/middleware/CorsMiddleware.js
+index ceb85c330e30d11c01120cdcfa0a9e4f009322c7..ce8ba7e360f5e285e1dcc5d403e1b633fcd32a96 100644
+--- a/build/src/start/server/middleware/CorsMiddleware.js
++++ b/build/src/start/server/middleware/CorsMiddleware.js
+@@ -29,11 +29,11 @@ function createCorsMiddleware(exp) {
+         if (typeof req.headers.origin === 'string') {
+             const { host, hostname } = new URL(req.headers.origin);
+             const isSameOrigin = host === req.headers.host;
+-            if (!isSameOrigin && !allowedHostnames.includes(hostname)) {
+-                next(new Error(`Unauthorized request from ${req.headers.origin}. ` + 'This may happen because of a conflicting browser extension to intercept HTTP requests. ' + 'Disable browser extensions or use incognito mode and try again.'));
+-                return;
+-            }
+-            res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
++            // if (!isSameOrigin && !allowedHostnames.includes(hostname)) {
++            //     next(new Error(`Unauthorized request from ${req.headers.origin}. ` + 'This may happen because of a conflicting browser extension to intercept HTTP requests. ' + 'Disable browser extensions or use incognito mode and try again.'));
++            //     return;
++            // }
++            res.setHeader('Access-Control-Allow-Origin', '*');
+             maybePreventMetroResetCorsHeader(req, res);
+         }
+         // Block MIME-type sniffing.
