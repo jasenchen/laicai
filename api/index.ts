@@ -10,10 +10,11 @@ export const config = { runtime: 'nodejs' }
 
 const app = new Hono()
 
-app.use('*', async (c, next) => {
+app.use('*', async (c: any, next: any) => {
   c.header('Access-Control-Allow-Origin', '*')
   c.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   c.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  if (c.req.method === 'OPTIONS') return c.text('ok')
   await next()
 })
 
