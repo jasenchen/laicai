@@ -433,7 +433,7 @@ imagesRouter.post('/generations', zValidator('json', generateImageSchema), async
         message: `${volcanoResponse.status} ${volcanoResponse.statusText}`,
         detail: errorDetail,
         requestId: requestId
-      }, volcanoResponse.status);
+      }, 502);
     }
 
     // 处理流式响应

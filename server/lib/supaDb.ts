@@ -47,7 +47,7 @@ class QueryBuilder {
     }
     const { data, error } = await query
     if (error) throw new Error(error.message)
-    return data || []
+    return (data || []) as any[]
   }
 }
 
@@ -79,7 +79,7 @@ function collection(name: string) {
       })
       const { data, error } = await supabase.from(table).insert(mappedDocs)
       if (error) throw new Error(error.message)
-      return { insertedCount: data?.length || 0 }
+      return { insertedCount: (data || []).length }
     },
     async insertOne(doc: any) {
       const nd: any = { ...doc }
@@ -87,7 +87,8 @@ function collection(name: string) {
       if ('updatedAt' in nd) { nd.updatedat = nd.updatedAt; delete nd.updatedAt }
       const { data, error } = await supabase.from(table).insert(nd).select('*').limit(1)
       if (error) throw new Error(error.message)
-      const inserted = Array.isArray(data) ? data[0] : data
+      const arr = (data || []) as any[]
+      const inserted = Array.isArray(arr) ? arr[0] : arr
       return { insertedId: inserted?.id ?? inserted?._id ?? inserted?.uid }
     },
     async findOne(filter: Filter) {
@@ -98,7 +99,8 @@ function collection(name: string) {
       }
       const { data, error } = await query
       if (error) throw new Error(error.message)
-      return Array.isArray(data) ? data[0] : data
+      const arr = (data || []) as any[]
+      return Array.isArray(arr) ? arr[0] : arr
     },
     async updateOne(filter: Filter, update: { $set?: any }) {
       const values = update?.$set || {}

@@ -82,7 +82,7 @@ userGenerationsRouter.delete('/clear-all', async (c: Context) => {
  */
 userGenerationsRouter.post('/', zValidator('json', createGenerationSchema), async (c: Context) => {
   try {
-    const { uid, prompt, ref_img } = c.req.valid('json');
+    const { uid, prompt, ref_img } = (c.req as any).valid('json') as z.infer<typeof createGenerationSchema>;
     console.log('[userGenerations] 创建生成记录请求:', { uid, prompt: prompt.substring(0, 50) + '...', ref_img });
 
     // 每次都创建新记录，不再检查或更新已有记录
@@ -121,7 +121,7 @@ userGenerationsRouter.post('/', zValidator('json', createGenerationSchema), asyn
  */
 userGenerationsRouter.post('/with-result', zValidator('json', createGenerationWithResultSchema), async (c: Context) => {
   try {
-    const { uid, prompt, ref_img, g_imgurl1, g_imgurl2, g_imgurl3, g_imgurl4, download_img } = c.req.valid('json');
+    const { uid, prompt, ref_img, g_imgurl1, g_imgurl2, g_imgurl3, g_imgurl4, download_img } = (c.req as any).valid('json') as z.infer<typeof createGenerationWithResultSchema>;
     console.log('[userGenerations] 创建包含生成结果的记录:', { 
       uid, 
       prompt: prompt.substring(0, 50) + '...', 
@@ -172,7 +172,7 @@ userGenerationsRouter.post('/with-result', zValidator('json', createGenerationWi
  */
 userGenerationsRouter.put('/update-download', zValidator('json', updateDownloadRecordSchema), async (c: Context) => {
   try {
-    const { uid, download_img } = c.req.valid('json');
+    const { uid, download_img } = (c.req as any).valid('json') as z.infer<typeof updateDownloadRecordSchema>;
     console.log('[userGenerations] 更新下载记录:', { uid, download_img: download_img.substring(0, 50) + '...' });
 
     // 找到用户最新的生成记录
@@ -231,7 +231,7 @@ userGenerationsRouter.put('/update-download', zValidator('json', updateDownloadR
  */
 userGenerationsRouter.get('/', zValidator('query', getGenerationsSchema), async (c: Context) => {
   try {
-    const { uid, limit } = c.req.valid('query');
+    const { uid, limit } = (c.req as any).valid('query') as z.infer<typeof getGenerationsSchema>;
     
     console.log('[userGenerations] 获取用户生成记录请求:', { uid, limit });
 
