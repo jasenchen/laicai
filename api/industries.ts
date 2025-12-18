@@ -1,7 +1,6 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { db } from '../server/lib/supaDb'
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   try {
     const industries = await db.collection('4f831654_industries')
       .find({})
@@ -30,4 +29,3 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.status(500).json({ success: false, error: e?.message || '服务器内部错误' })
   }
 }
-
