@@ -2,6 +2,9 @@
   "builds": [
     { "src": "api/index.ts", "use": "@vercel/node" }
   ],
+  "env": {
+    "NPM_CONFIG_REGISTRY": "https://registry.npmjs.org/"
+  },
   "routes": [
     { "src": "/api/(.*)", "dest": "api/index.ts" }
   ]
