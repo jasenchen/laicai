@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { handle } from 'hono/vercel'
-import imagesRouter from '../server/routes/images'
-import authRouter from '../server/routes/auth'
+import { imagesRouter } from '../server/routes/images'
+import { authRouter } from '../server/routes/auth'
 import industriesRouter from '../server/routes/industries'
 import userGenerationsRouter from '../server/routes/userGenerations'
 import fileUploadRouter from '../server/routes/fileUpload'
@@ -17,13 +17,14 @@ app.use('*', async (c, next) => {
   await next()
 })
 
-app.get('/health', (c) => c.json({ status: 'ok', timestamp: new Date().toISOString() }))
+app.get('/api/health', (c) => c.json({ status: 'ok', timestamp: new Date().toISOString() }))
 
-app.route('/images', imagesRouter)
-app.route('/auth', authRouter)
-app.route('/industries', industriesRouter)
-app.route('/user-generations', userGenerationsRouter)
-app.route('/', fileUploadRouter)
+app.route('/api/images', imagesRouter)
+app.route('/api/auth', authRouter)
+app.route('/api/industries', industriesRouter)
+app.route('/api/user-generations', userGenerationsRouter)
+app.route('/api', fileUploadRouter)
+
+app.notFound((c) => c.json({ error: '接口不存在' }, 404))
 
 export default handle(app)
-
