@@ -18,15 +18,14 @@ app.use('*', async (c: any, next: any) => {
   await next()
 })
 
-app.get('/health', (c: any) => c.json({ status: 'ok', timestamp: new Date().toISOString() }))
+app.get('/api/health', (c: any) => c.json({ status: 'ok', timestamp: new Date().toISOString() }))
 
-app.route('/images', imagesRouter)
-app.route('/auth', authRouter)
-app.route('/industries', industriesRouter)
-app.route('/user-generations', userGenerationsRouter)
-app.route('/', fileUploadRouter)
+app.route('/api/images', imagesRouter)
+app.route('/api/auth', authRouter)
+app.route('/api/industries', industriesRouter)
+app.route('/api/user-generations', userGenerationsRouter)
+app.route('/api', fileUploadRouter)
 
 app.notFound((c: any) => c.json({ error: '接口不存在' }, 404))
 
 export default handle(app)
-
