@@ -1,11 +1,15 @@
 {
   "builds": [
-    { "src": "api/index.ts", "use": "@vercel/node" }
+    { "src": "api/index.ts", "use": "@vercel/node" },
+    { "src": "api/health.ts", "use": "@vercel/node" },
+    { "src": "api/industries.ts", "use": "@vercel/node" }
   ],
   "env": {
     "NPM_CONFIG_REGISTRY": "https://registry.npmjs.org/"
   },
   "routes": [
+    { "src": "/api/health", "dest": "api/health.ts" },
+    { "src": "/api/industries", "dest": "api/industries.ts" },
     { "src": "/api/(.*)", "dest": "api/index.ts" }
   ]
 }
