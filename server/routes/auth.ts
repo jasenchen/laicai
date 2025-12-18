@@ -117,11 +117,20 @@ authRouter.post('/verify', zValidator('json', userPhoneSchema), async (c) => {
         }
       });
     } else {
-      console.log('[Auth] 手机号验证失败: 手机号不存在');
+      // 不存在则自动注册该手机号，避免初始化超时阻塞登录
+      const uid = `uid_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+      await db.collection('4f831654_user_phones').insertOne({
+        uid,
+        phone,
+        dosage: 10,
+        resettime: new Date()
+      });
+      console.log('[Auth] 手机号不存在，已自动创建用户:', { uid, phone });
       return c.json({
-        success: false,
-        message: '手机号有误，请重新输入'
-      }, 400);
+        success: true,
+        message: '手机号已创建并验证成功',
+        data: { uid, phone }
+      });
     }
   } catch (error) {
     console.error('[Auth] 验证手机号时发生错误:', error.message);
